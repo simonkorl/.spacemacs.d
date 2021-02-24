@@ -71,6 +71,7 @@ values."
                                       citeproc-org
                                       dired-k
                                       git-gutter
+                                      conda
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -745,7 +746,22 @@ rulesepcolor= \\color{ red!20!green!20!blue!20}
   (helm-add-action-to-source "Edit notes" 'my/org-ref-notes-function helm-source-bibtex 7)
 )
 ;; citeproc-org
+;; 使得 org mode 可以使用引用
 (citeproc-org-setup)
+;; git-gutter
+;; 使得 emacs 可以在侧边栏显示 git 的状态
+
+;; conda
+;; 使得 emacs 可以利用 conda 的环境
+;;Anaconda support
+(require 'conda)
+
+(setq conda-env-home-directory conda-anaconda-home)
+;;get current environment--from environment variable CONDA_DEFAULT_ENV
+(conda-env-activate "base")
+;;(conda-env-autoactivate-mode t)
+;; add conda-environment into mode-line
+(setq-default mode-line-format (cons mode-line-format '(:exec conda-env-current-name)))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
