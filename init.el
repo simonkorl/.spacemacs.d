@@ -353,6 +353,7 @@ you should place your code here."
     (spacemacs/set-leader-keys-for-major-mode 'org-agenda-mode
       "." 'spacemacs/org-agenda-transient-state/body)
     )
+
   (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "UNCLEAR(u)" "|" "DONE(d)")
                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING" ))))
@@ -377,36 +378,91 @@ you should place your code here."
                 ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
                 ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
                 ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+  ;; 
+  (defun bh/hide-other ()
+    (interactive)
+    (save-excursion
+      (org-back-to-heading 'invisible-ok)
+      (hide-other)
+      (org-cycle)
+      (org-cycle)
+      (org-cycle)))
+
+  (defun bh/set-truncate-lines ()
+    "Toggle value of truncate-lines and refresh window display."
+    (interactive)
+    (setq truncate-lines (not truncate-lines))
+    ;; now refresh window display (an idiom from simple.el):
+    (save-excursion
+      (set-window-start (selected-window)
+                        (window-start (selected-window)))))
+
+  (defun bh/make-org-scratch ()
+    (interactive)
+    (find-file "~/org/publish/scratch.org")
+    (gnus-make-directory "~/org/publish"))
+
+  (defun bh/switch-to-scratch ()
+    (interactive)
+    (switch-to-buffer "*scratch*"))
+  ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+(setq org-capture-templates
+      (quote (("t" "Todo" entry (file+headline org-agenda-file-gtd "Inbox")
+               "* TODO [#B] %?\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("r" "respond" entry (file+headline org-agenda-file-gtd "Inbox")
+               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+              ("n" "note" entry (file org-agenda-file-note)
+               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("j" "Journal" entry (file+datetree org-agenda-file-journal)
+               "* %?\n%U\n" :clock-in t :clock-resume t)
+              ("w" "org-protocol" entry (file+headline org-agenda-file-gtd "Inbox")
+               "* TODO Review %c\n%U\n" :immediate-finish t)
+              ("m" "Meeting" entry (file+headline org-agenda-file-gtd "Inbox")
+
+               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+              ("p" "Phone call" entry (file+headline org-agenda-file-gtd "Inbox")
+               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+              ("h" "Habit" entry (file+headline org-agenda-file-gtd "Inbox")
+               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
   ;; the %i would copy the selected text into the template
   ;;http://www.howardism.org/Technical/Emacs/journaling-org.html
   ;;add multi-file journal
-  (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline org-agenda-file-gtd "Inbox")
-           "* TODO [#B] %?\n %i\n"
-           :empty-lines 1)
-          ("n" "notes" entry (file+headline org-agenda-file-note "Quick notes")
-           "* %?\n %i\n %U"
-           :empty-lines 1)
-          ("b" "Blog Ideas" entry (file+headline org-agenda-file-note "Blog Ideas")
-           "* TODO [#B] %?\n %i\n %U"
-           :empty-lines 1)
-          ("s" "Code Snippet" entry
-           (file org-agenda-file-code-snippet)
-           "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
-          ("w" "work" entry (file+headline org-agenda-file-gtd "Inbox")
-           "* TODO [#A] %?\n %i\n %U"
-           :empty-lines 1)
-          ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
-           "* TODO [#C] %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n %U"
-           :empty-lines 1)
-          ("l" "links" entry (file+headline org-agenda-file-note "Quick notes")
-           "* TODO [#C] %?\n %i\n %a \n %U"
-           :empty-lines 1)
-          ("j" "Journal Entry"
-           entry (file+datetree org-agenda-file-journal)
-           "* %?"
-           :empty-lines 1)))
+  ;; (setq org-capture-templates
+  ;;      '(("t" "Todo" entry (file+headline org-agenda-file-gtd "Inbox")
+;;        "* TODO [#B] %?\n %i\n"
+;;         :empty-lines 1)
+;;        ("n" "notes" entry (file+headline org-agenda-file-note "Quick notes")
+;;         "* %?\n %i\n %U"
+;;         :empty-lines 1)
+;;        ("b" "Blog Ideas" entry (file+headline org-agenda-file-note "Blog Ideas")
+;;         "* TODO [#B] %?\n %i\n %U"
+;;         :empty-lines 1)
+;;        ("s" "Code Snippet" entry
+;;         (file org-agenda-file-code-snippet)
+;;         "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
+;;        ("w" "work" entry (file+headline org-agenda-file-gtd "Inbox")
+;;         "* TODO [#A] %?\n %i\n %U"
+;;         :empty-lines 1)
+;;        ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
+;;         "* TODO [#C] %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n %U"
+;;         :empty-lines 1)
+;;        ("l" "links" entry (file+headline org-agenda-file-note "Quick notes")
+;;         "* TODO [#C] %?\n %i\n %a \n %U"
+;;         :empty-lines 1)
+;;        ("j" "Journal Entry"
+;;         entry (file+datetree org-agenda-file-journal)
+;;         "* %?"
+;;         :empty-lines 1)))
 
+   
+  ;; Remove empty LOGBOOK drawers on clock out
+  (defun bh/remove-empty-drawer-on-clock-out ()
+    (interactive)
+    (save-excursion
+      (beginning-of-line 0)
+      (org-remove-empty-drawer-at (point))))
+
+  (add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
   ;;An entry without a cookie is treated just like priority ' B '.
   ;;So when create new task, they are default 重要且紧急
   (setq org-agenda-custom-commands
@@ -479,10 +535,12 @@ you should place your code here."
     (not (member (nth 2 (org-heading-components)) org-done-keywords)))
 
   (setq org-refile-target-verify-function 'bh/verify-refile-target)
+  ;; org mode truncate-lines
   (add-hook 'org-mode-hook
             (lambda()
               (setq truncate-lines nil)))
-
+  ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
+  (setq org-clock-out-remove-zero-time-clocks t)
   ;; brand new calendar
   (require 'calfw-cal)
   (require 'calfw-ical)
@@ -745,6 +803,8 @@ rulesepcolor= \\color{ red!20!green!20!blue!20}
 ;; Note that 7 is a magic number of the index where you want to insert the command. You may need to change yours.
   (helm-add-action-to-source "Edit notes" 'my/org-ref-notes-function helm-source-bibtex 7)
 )
+;;
+(setq org-export-backends (quote (ascii html icalendar latex md)))
 ;; citeproc-org
 ;; 使得 org mode 可以使用引用
 (citeproc-org-setup)
