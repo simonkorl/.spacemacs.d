@@ -30,7 +30,8 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(python
+   '(yaml
+     python
      rust
      html
      ;; ----------------------------------------------------------------
@@ -55,6 +56,7 @@ values."
      (colors :variables
              colors-enable-nyan-cat-progress-bar t)
      evernote
+     ;; zilongshanren
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -139,6 +141,11 @@ values."
                                 (projects . 7))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
+
+   ;; [[file:c:/Users/machuan/.spacemacs.d/init.el::dotspacemacs-mode-line-theme][dotspacemacs-mode-line-theme]] is 'spacemacs, 'all-the-icons, 'custom, 'vim-powerline or 'vanilla or a list with `car' one of the previous values and properties one of the following: `:separator' or `:separator-scale'
+
+   dotspacemacs-mode-line-theme 'spacemacs
+
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'text-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
@@ -326,6 +333,10 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  (setq configuration-layer-elpa-archives
+        '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
+          ("org-cn"   . "http://elpa.emacs-china.org/org/")
+          ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
   )
 
 (defun dotspacemacs/user-config ()
@@ -355,7 +366,7 @@ you should place your code here."
     )
 
   (setq org-todo-keywords
-        (quote ((sequence "TODO(t)" "NEXT(n)" "UNCLEAR(u)" "|" "DONE(d)")
+        (quote ((sequence "TODO(t)" "NEXT(n)" "UNCLEAR(u)" "ASK(a)" "|" "DONE(d)")
                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING" ))))
 
   (setq org-todo-keyword-faces
@@ -363,6 +374,7 @@ you should place your code here."
                 ("NEXT" :foreground "blue" :weight bold)
                 ("DONE" :foreground "forest green" :weight bold)
                 ("UNCLEAR" :foreground "light blue" :weight bold)
+                ("ASK" :foreground "blue" :weight bold)
                 ("WAITING" :foreground "orange" :weight bold)
                 ("HOLD" :foreground "magenta" :weight bold)
                 ("CANCELLED" :foreground "forest green" :weight bold)
@@ -503,6 +515,7 @@ you should place your code here."
               (overlay-put ov 'line-height line-height)
               (overlay-put ov 'line-spacing (1- line-height))))))))
   (add-hook 'org-agenda-finalize-hook #'my:org-agenda-time-grid-spacing)
+  (setq org-columns-default-format "%60ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
   ;; org refile
 ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
   (setq org-refile-targets (quote ((nil :maxlevel . 9)
@@ -516,6 +529,7 @@ you should place your code here."
 
 ; Allow refile to create parent tasks with confirmation
   (setq org-refile-allow-creating-parent-nodes (quote confirm))
+
 
 ; Use IDO for both buffer and file completion and ido-everywhere to t
 ; (setq org-completion-use-ido t)
@@ -615,6 +629,10 @@ you should place your code here."
                '("figuresright" "rotating" t))
   (add-to-list 'org-latex-packages-alist
                '("Lenny" "fncychap" t))
+  (add-to-list 'org-latex-packages-alist
+               '("UTF8" "ctex" t))
+  (add-to-list 'org-latex-packages-alist
+               '("utf8" "inputenc" t))
 
   (add-to-list 'org-latex-classes
                '("lengyue-org-book"
@@ -660,8 +678,6 @@ rulesepcolor= \\color{ red!20!green!20!blue!20}
   (add-to-list 'org-latex-classes
                '("lengyue-org-article"
                  "\\documentclass{article}
-\\usepackage[UTF8]{ctex}
-\\usepackage[utf8]{inputenc}
 \\usepackage{titlesec}
 \\usepackage{hyperref}
 
@@ -738,8 +754,10 @@ rulesepcolor= \\color{ red!20!green!20!blue!20}
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
+  ;; 将 pdf 引擎切换为 xelatex
   (setq org-latex-pdf-process
-        '("xelatex -interaction nonstopmode -output-directory %o %f"
+        '(
+          "xelatex -interaction nonstopmode -output-directory %o %f"
           ;;"biber %b" "xelatex -interaction nonstopmode -output-directory %o %f"
           "bibtex %b"
           "xelatex -interaction nonstopmode -output-directory %o %f"
@@ -850,8 +868,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(evil-want-Y-yank-to-eol nil)
+ '(org-latex-compiler "xelatex")
  '(package-selected-packages
-   '(conda yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry pippel pipenv pyvenv pip-requirements lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode cython-mode counsel-gtags company-anaconda blacken anaconda-mode pythonic wgrep smex ivy-hydra counsel-projectile counsel swiper ivy cnfonts org-projectile org-pomodoro alert log4e xterm-color unfill smeargle shell-pop orgit org-category-capture org-present gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger g it-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete spaceline paradox hydra highlight-numbers helm-projectile projectile flx-ido evil-unimpaired f evil-search-highlight-persist evil-lisp-state ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org powerline restart-emacs request rainbow-delimiters pkg-info popwin persp-mode pcre2el spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide lv hungry-delete hl-todo highlight-parentheses parent-mode highlight-indentation helm-themes helm-swoop epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+   '(pomodoro yaml-mode wgrep smex ivy-hydra counsel-projectile counsel swiper ivy cnfonts org-projectile org-pomodoro alert log4e xterm-color unfill smeargle shell-pop orgit org-category-capture org-present gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger g it-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete spaceline paradox hydra highlight-numbers helm-projectile projectile flx-ido evil-unimpaired f evil-search-highlight-persist evil-lisp-state ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org powerline restart-emacs request rainbow-delimiters pkg-info popwin persp-mode pcre2el spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide lv hungry-delete hl-todo highlight-parentheses parent-mode highlight-indentation helm-themes helm-swoop epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
