@@ -358,7 +358,8 @@ you should place your code here."
   ;; 让 spacemacs mode-line 中的 Unicode 图标正确显示。
   (cnfonts-set-spacemacs-fallback-fonts)
 
-  (setq tramp-ssh-controlmaster-options
+  (delete-selection-mode 1)
+(setq tramp-ssh-controlmaster-options
         "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
   ;; ===
   ;; eaf
@@ -383,9 +384,10 @@ you should place your code here."
   (setq-default org-agenda-dir "~/org/agenda")
   (setq org-agenda-file-note (expand-file-name "notes.org" org-agenda-dir))
   (setq org-agenda-file-gtd (expand-file-name "gtd.org" org-agenda-dir))
+  (setq org-agenda-file-inbox (expand-file-name "inbox.org" org-agenda-dir))
   (setq org-agenda-file-journal (expand-file-name "journal.org" org-agenda-dir))
   (setq org-agenda-file-code-snippet (expand-file-name "snippet.org" org-agenda-dir))
-  (setq org-default-notes-file (expand-file-name "gtd.org" org-agenda-dir))
+  (setq org-default-notes-file (expand-file-name "inbox.org" org-agenda-dir))
   (setq org-agenda-files (list org-agenda-dir))
 
   (with-eval-after-load 'org-agenda
@@ -487,23 +489,23 @@ you should place your code here."
     (switch-to-buffer "*scratch*"))
   ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
-      (quote (("t" "Todo" entry (file+headline org-agenda-file-gtd "Inbox")
-               "* TODO [#B] %?\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("r" "respond" entry (file+headline org-agenda-file-gtd "Inbox")
-               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+      (quote (("t" "Todo" entry (file org-agenda-file-inbox)
+               "* TODO [#B] %?\n%U\n%a\n\n" :clock-in t :clock-resume t)
+              ("r" "respond" entry (file org-agenda-file-inbox)
+               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n\n" :clock-in t :clock-resume t :immediate-finish t)
               ("n" "note" entry (file org-agenda-file-note)
-               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+               "* %? :NOTE:\n%U\n%a\n\n" :clock-in t :clock-resume t)
               ("j" "Journal" entry (file+datetree org-agenda-file-journal)
-               "* %?\n%U\n" :clock-in t :clock-resume t)
-              ("w" "org-protocol" entry (file+headline org-agenda-file-gtd "Inbox")
-               "* TODO Review %c\n%U\n" :immediate-finish t)
-              ("m" "Meeting" entry (file+headline org-agenda-file-gtd "Inbox")
+               "* %?\n%U\n\n" :clock-in t :clock-resume t)
+              ("w" "org-protocol" entry (file org-agenda-file-note)
+               "* TODO Review %c\n%U\n\n" :immediate-finish t)
+              ("m" "Meeting" entry (file org-agenda-file-note)
 
-               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-              ("p" "Phone call" entry (file+headline org-agenda-file-gtd "Inbox")
-               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-              ("h" "Habit" entry (file+headline org-agenda-file-gtd "Inbox")
-               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+               "* MEETING with %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
+              ("p" "Phone call" entry (file org-agenda-file-note)
+               "* PHONE %? :PHONE:\n%U\n" :clock-in t :clock-resume t)
+              ("h" "Habit" entry (file org-agenda-file-note)
+               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n\n"))))
   ;; the %i would copy the selected text into the template
   ;;http://www.howardism.org/Technical/Emacs/journaling-org.html
   ;;add multi-file journal
@@ -1600,6 +1602,7 @@ This function is called at the very end of Spacemacs initialization."
      ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
      ("Other" "" TeX-run-command t t :help "Run an arbitrary command")))
  '(eaf-python-command "python.exe")
+ '(alert-default-style 'toaster)
  '(evil-want-Y-yank-to-eol nil)
  '(latex-run-command "xelatex")
  '(org-latex-compiler "xelatex")
