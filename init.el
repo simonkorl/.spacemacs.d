@@ -663,6 +663,8 @@ you should place your code here."
 ;; Include current clocking task in clock reports
 (setq org-clock-report-include-clocking-task t)
 
+(setq org-agenda-span 'day)
+
 (setq bh/keep-clock-running nil)
 
 (defun bh/clock-in-to-next (kw)
@@ -808,7 +810,7 @@ A prefix arg forces clock in of the default task."
   (add-hook 'org-agenda-finalize-hook #'my:org-agenda-time-grid-spacing)
 
   ; Set default column view headings: Task Effort Clock_Summary
-  (setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
+  (setq org-columns-default-format "%38ITEM(Details) %TAGS(Context) %7TODO(To Do) %5Effort(Time){:} %6CLOCKSUM{Total}")
   ;; (setq org-columns-default-format "%60ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
   ;; org refile
   ;; Targets include this file and any file contributing to the agenda - up to 9 levels deep
@@ -1110,6 +1112,33 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
     (if (bh/is-subproject-p)
         nil
       next-headline)))
+;; Archive
+(setq org-archive-mark-done nil)
+(setq org-archive-location "%s_archive::* Archived Tasks")
+(defun bh/skip-non-archivable-tasks ()
+  "Skip trees that are not available for archiving"
+  (save-restriction
+    (widen)
+    ;; Consider only tasks with done todo headings as archivable candidates
+    (let ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
+          (subtree-end (save-excursion (org-end-of-subtree t))))
+      (if (member (org-get-todo-state) org-todo-keywords-1)
+          (if (member (org-get-todo-state) org-done-keywords)
+              (let* ((daynr (string-to-number (format-time-string "%d" (current-time))))
+                     (a-month-ago (* 60 60 24 (+ daynr 1)))
+                     (last-month (format-time-string "%Y-%m-" (time-subtract (current-time) (seconds-to-time a-month-ago))))
+                     (this-month (format-time-string "%Y-%m-" (current-time)))
+                     (subtree-is-current (save-excursion
+                                           (forward-line 1)
+                                           (and (< (point) subtree-end)
+                                                (re-search-forward (concat last-month "\\|" this-month) subtree-end t)))))
+                (if subtree-is-current
+                    subtree-end ; Has a date in this month or last month, skip it
+                  nil))  ; available to archive
+            (or subtree-end (point-max)))
+        next-headline))))
+
+
   ;; Agenda view tweaks
 ;; Show all future entries for repeating tasks
 (setq org-agenda-repeating-timestamp-show-all t)
