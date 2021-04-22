@@ -810,7 +810,7 @@ A prefix arg forces clock in of the default task."
   (add-hook 'org-agenda-finalize-hook #'my:org-agenda-time-grid-spacing)
 
   ; Set default column view headings: Task Effort Clock_Summary
-  (setq org-columns-default-format "%38ITEM(Details) %TAGS(Context) %7TODO(To Do) %5Effort(Time){:} %6CLOCKSUM{:}")
+  (setq org-columns-default-format "%38ITEM(Details) %TAGS(Context) %7TODO(To Do) %3PRIORITY %5Effort(Time){:} %6CLOCKSUM{:}")
   ;; (setq org-columns-default-format "%60ITEM(Task) %TODO %6Effort(Estim){:}  %6CLOCKSUM(Clock) %TAGS")
   ;; org refile
   ;; Targets include this file and any file contributing to the agenda - up to 9 levels deep
