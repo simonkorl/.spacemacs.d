@@ -1,4 +1,4 @@
-;; Todo 
+;; Todo
 (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "UNCLEAR(u)" "ASK(a)" "|" "DONE(d)")
                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING" ))))
@@ -43,7 +43,7 @@
 ;;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
       (quote (("t" "Todo" entry (file org-agenda-file-inbox)
-               "* TODO [#B] %?\n%U\n%a\n\n" :clock-in t :clock-resume t)
+               "* TODO [#B] %? \nSCHEDULED: <%(org-read-date nil nil \"\")>\n%U\n%a\n\n" :clock-in t :clock-resume t)
               ("r" "respond" entry (file org-agenda-file-inbox)
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n\n" :clock-in t :clock-resume t :immediate-finish t)
               ("n" "note" entry (file+headline org-agenda-file-note "Notes")
