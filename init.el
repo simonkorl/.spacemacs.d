@@ -346,6 +346,25 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (use-package eaf
+    :load-path "~/.spacemacs.d/emacs-application-framework"
+    )
+  (require 'eaf-evil)
+
+  (setq eaf-evil-leader-keymap  spacemacs-cmds) 
+
+  (define-key key-translation-map (kbd "SPC")
+    (lambda (prompt)
+      (if (derived-mode-p 'eaf-mode)
+          (pcase eaf--buffer-app-name
+            ("browser" (if (string= (eaf-call-sync "call_function" eaf--buffer-id "is_focus") "True")
+                           (kbd "SPC")
+                         (kbd eaf-evil-leader-key)))
+            ("pdf-viewer" (kbd eaf-evil-leader-key))
+            ("image-viewer" (kbd eaf-evil-leader-key))
+            (_  (kbd "SPC")))
+        (kbd "SPC"))))
+
   (use-package all-the-icons)
   (use-package awesome-tab
     :load-path "~/.spacemacs.d/awesome-tab"
@@ -353,16 +372,9 @@ you should place your code here."
     (awesome-tab-mode t))
 
   (awesome-tab-build-helm-source)
-  (global-set-key (kbd "s-1") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-2") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-3") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-4") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-5") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-6") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-7") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-8") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-9") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-0") 'awesome-tab-select-visible-tab)
+
+  (global-set-key (kbd "C-c C-j") 'awesome-tab-ace-jump)
+
 (defhydra awesome-fast-switch (:hint nil)
   "
  ^^^^Fast Move             ^^^^Tab                    ^^Search            ^^Misc
