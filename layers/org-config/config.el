@@ -52,10 +52,10 @@
                "* %?\n%U\n\n" :clock-in t :clock-resume t)
               ("w" "org-protocol" entry (file org-agenda-file-inbox)
                "* TODO Review %c\n%U\n\n" :immediate-finish t)
-              ("m" "Meeting" entry (file org-agenda-file-inbox)
+              ("m" "Meeting" entry (file+datetree org-agenda-file-journal)
 
                "* MEETING with %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
-              ("p" "Phone call" entry (file org-agenda-file-inbox)
+              ("p" "Phone call" entry (file+datetree org-agenda-file-journal)
                "* PHONE %? :PHONE:\n%U\n" :clock-in t :clock-resume t)
               ("h" "Habit" entry (file org-agenda-file-inbox)
                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n\n"))))
