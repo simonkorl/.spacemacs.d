@@ -353,16 +353,6 @@ you should place your code here."
     (awesome-tab-mode t))
 
   (awesome-tab-build-helm-source)
-  (global-set-key (kbd "s-1") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-2") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-3") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-4") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-5") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-6") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-7") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-8") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-9") 'awesome-tab-select-visible-tab)
-  (global-set-key (kbd "s-0") 'awesome-tab-select-visible-tab)
 (defhydra awesome-fast-switch (:hint nil)
   "
  ^^^^Fast Move             ^^^^Tab                    ^^Search            ^^Misc
@@ -426,76 +416,6 @@ you should place your code here."
 (setq tramp-ssh-controlmaster-options
         "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 
-  (with-eval-after-load 'org-agenda
-    (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro)
-    (spacemacs/set-leader-keys-for-major-mode 'org-agenda-mode
-      "." 'spacemacs/org-agenda-transient-state/body)
-    )
-
-  ;; (setq org-todo-keywords
-  ;;       (quote ((sequence "TODO(t)" "NEXT(n)" "UNCLEAR(u)" "ASK(a)" "|" "DONE(d)")
-  ;;               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING" ))))
-
-  ;; (setq org-todo-keyword-faces
-  ;;       (quote (("TODO" :foreground "red" :weight bold)
-  ;;               ("NEXT" :foreground "blue" :weight bold)
-  ;;               ("DONE" :foreground "forest green" :weight bold)
-  ;;               ("UNCLEAR" :foreground "light blue" :weight bold)
-  ;;               ("ASK" :foreground "blue" :weight bold)
-  ;;               ("WAITING" :foreground "orange" :weight bold)
-  ;;               ("HOLD" :foreground "magenta" :weight bold)
-  ;;               ("CANCELLED" :foreground "forest green" :weight bold)
-  ;;               ("MEETING" :foreground "forest green" :weight bold)
-  ;;               ("PHONE" :foreground "forest green" :weight bold))))
-  ;; (setq org-use-fast-todo-selection t)
-  ;; (setq org-treat-S-cursor-todo-selection-as-state-change nil)
-  ;; (setq org-todo-state-tags-triggers
-  ;;       (quote (("CANCELLED" ("CANCELLED" . t))
-  ;;               ("WAITING" ("WAITING" . t))
-  ;;               ("HOLD" ("WAITING") ("HOLD" . t))
-  ;;               (done ("WAITING") ("HOLD"))
-  ;;               ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-  ;;               ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-  ;;               ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
-  ;; org key binding
-  ;; Custom Key Bindings
-  ;; (global-set-key (kbd "<f12>") 'org-agenda)
-  ;; (global-set-key (kbd "<f5>") 'bh/org-todo)
-  ;; (global-set-key (kbd "<S-f5>") 'bh/widen)
-  ;; (global-set-key (kbd "<f7>") 'bh/set-truncate-lines)
-  ;; (global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
-  ;; (global-set-key (kbd "<f9> <f9>") 'bh/show-org-agenda)
-  ;; (global-set-key (kbd "<f9> b") 'bbdb)
-  ;; (global-set-key (kbd "<f9> c") 'calendar)
-  ;; (global-set-key (kbd "<f9> f") 'boxquote-insert-file)
-  ;; (global-set-key (kbd "<f9> g") 'gnus)
-  ;; (global-set-key (kbd "<f9> h") 'bh/hide-other)
-  ;; (global-set-key (kbd "<f9> n") 'bh/toggle-next-task-display)
-
-  ;; (global-set-key (kbd "<f9> I") 'bh/punch-in)
-  ;; (global-set-key (kbd "<f9> O") 'bh/punch-out)
-  ;; (global-set-key (kbd "<f9> P") 'bh/punch-pomodoro)
-
-  ;; (global-set-key (kbd "<f9> o") 'bh/make-org-scratch)
-
-  ;; (global-set-key (kbd "<f9> r") 'boxquote-region)
-  ;; (global-set-key (kbd "<f9> s") 'bh/switch-to-scratch)
-
-  ;; (global-set-key (kbd "<f9> t") 'bh/insert-inactive-timestamp)
-  ;; (global-set-key (kbd "<f9> T") 'bh/toggle-insert-inactive-timestamp)
-
-  ;; (global-set-key (kbd "<f9> v") 'visible-mode)
-  ;; (global-set-key (kbd "<f9> l") 'org-toggle-link-display)
-  ;; (global-set-key (kbd "<f9> SPC") 'bh/clock-in-last-task)
-  ;; (global-set-key (kbd "C-<f9>") 'previous-buffer)
-  ;; (global-set-key (kbd "M-<f9>") 'org-toggle-inline-images)
-  ;; (global-set-key (kbd "C-x n r") 'narrow-to-region)
-  ;; (global-set-key (kbd "C-<f10>") 'next-buffer)
-  ;; (global-set-key (kbd "<f11>") 'org-clock-goto)
-  ;; (global-set-key (kbd "C-<f11>") 'org-clock-in)
-  ;; (global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
-  ;; (global-set-key (kbd "C-c c") 'org-capture)
-
   ;;
   (defun bh/hide-other ()
     (interactive)
@@ -523,25 +443,7 @@ you should place your code here."
   (defun bh/switch-to-scratch ()
     (interactive)
     (switch-to-buffer "*scratch*"))
-;;   ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
-;; (setq org-capture-templates
-;;       (quote (("t" "Todo" entry (file org-agenda-file-inbox)
-;;                "* TODO [#B] %?\n%U\n%a\n\n" :clock-in t :clock-resume t)
-;;               ("r" "respond" entry (file org-agenda-file-inbox)
-;;                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n\n" :clock-in t :clock-resume t :immediate-finish t)
-;;               ("n" "note" entry (file+headline org-agenda-file-note "Notes")
-;;                "* %? :NOTE:\n%U\n%a\n\n" :clock-in t :clock-resume t)
-;;               ("j" "Journal" entry (file+datetree org-agenda-file-journal)
-;;                "* %?\n%U\n\n" :clock-in t :clock-resume t)
-;;               ("w" "org-protocol" entry (file org-agenda-file-inbox)
-;;                "* TODO Review %c\n%U\n\n" :immediate-finish t)
-;;               ("m" "Meeting" entry (file org-agenda-file-inbox)
 
-;;                "* MEETING with %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
-;;               ("p" "Phone call" entry (file org-agenda-file-inbox)
-;;                "* PHONE %? :PHONE:\n%U\n" :clock-in t :clock-resume t)
-;;               ("h" "Habit" entry (file org-agenda-file-inbox)
-;;                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n\n"))))
     ;; Remove empty LOGBOOK drawers on clock out
   (defun bh/remove-empty-drawer-on-clock-out ()
     (interactive)
@@ -1417,280 +1319,16 @@ Late deadlines first, then scheduled, then non-late deadlines"
 
 (defun bh/is-scheduled-late (date-str)
   (string-match "Sched\.\\(.*\\)x:" date-str))
-  ;; brand new calendar
-  (require 'calfw-cal)
-  (require 'calfw-ical)
-  ;; (require 'calfw-howm)
-  (require 'calfw-org)
 
-  (defun my-open-calendar ()
-    (interactive)
-    (cfw:open-calendar-buffer
-     :contents-sources
-     (list
-      (cfw:org-create-source "Green")  ; orgmode source
-      ;; (cfw:howm-create-source "Blue")  ; howm source
-      ;; (cfw:cal-create-source "Orange") ; diary source
-      ;; (cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
-      ;; (cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
-      )))
-  ;;
-  (global-set-key(kbd "C-c o") 'my-open-calendar)
+(display-time-mode 1);; 显示时间
+(setq display-time-24hr-format t) ;;格式
+(setq display-time-day-and-date t) ;;显示时间、星期、日期
 
-  (display-time-mode 1);; 显示时间
-  (setq display-time-24hr-format t) ;;格式
-  (setq display-time-day-and-date t) ;;显示时间、星期、日期
-
-  ;;org-mode export to latex
-  (require 'ox-latex)
-  (setq org-export-latex-listings t)
-
-  ;;org-mode source code setup in exporting to latex
-  (add-to-list 'org-latex-listings '("" "listings"))
-  (add-to-list 'org-latex-listings '("" "color"))
-
-  (add-to-list 'org-latex-packages-alist
-               '("" "xcolor" t))
-  (add-to-list 'org-latex-packages-alist
-               '("" "listings" t))
-  (add-to-list 'org-latex-packages-alist
-               '("" "fontspec" t))
-  (add-to-list 'org-latex-packages-alist
-               '("" "indentfirst" t))
-  (add-to-list 'org-latex-packages-alist
-               '("" "xunicode" t))
-  (add-to-list 'org-latex-packages-alist
-               '("" "geometry"))
-  (add-to-list 'org-latex-packages-alist
-               '("" "float"))
-  (add-to-list 'org-latex-packages-alist
-               '("" "longtable"))
-  (add-to-list 'org-latex-packages-alist
-               '("" "tikz"))
-  (add-to-list 'org-latex-packages-alist
-               '("" "fancyhdr"))
-  (add-to-list 'org-latex-packages-alist
-               '("" "textcomp"))
-  (add-to-list 'org-latex-packages-alist
-               '("" "amsmath"))
-  (add-to-list 'org-latex-packages-alist
-               '("" "tabularx" t))
-  (add-to-list 'org-latex-packages-alist
-               '("" "booktabs" t))
-  (add-to-list 'org-latex-packages-alist
-               '("" "grffile" t))
-  (add-to-list 'org-latex-packages-alist
-               '("" "wrapfig" t))
-  (add-to-list 'org-latex-packages-alist
-               '("normalem" "ulem" t))
-  (add-to-list 'org-latex-packages-alist
-               '("" "amssymb" t))
-  (add-to-list 'org-latex-packages-alist
-               '("" "capt-of" t))
-  (add-to-list 'org-latex-packages-alist
-               '("figuresright" "rotating" t))
-  (add-to-list 'org-latex-packages-alist
-               '("Lenny" "fncychap" t))
-  (add-to-list 'org-latex-packages-alist
-               '("UTF8" "ctex" t))
-  (add-to-list 'org-latex-packages-alist
-               '("utf8" "inputenc" t))
-
-  (add-to-list 'org-latex-classes
-               '("lengyue-org-book"
-                 "\\documentclass{book}
-\\usepackage[UTF8]{ctex}
-\\usepackage[utf8]{inputenc}
-% chapter set
-\\usepackage{titlesec}
-\\usepackage{hyperref}
-
-[NO-DEFAULT-PACKAGES]
-[PACKAGES]
-
-\\setmainfont{DejaVu Sans} % 英文衬线字体
-\\setsansfont{DejaVu Serif} % 英文无衬线字体
-\\setmonofont{DejaVu Sans Mono}
-
-%如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
-\\defaultfontfeatures{Mapping=tex-text}
-
-% 中文断行
-\\XeTeXlinebreaklocale \"zh\"
-\\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
-
-% 代码设置
-\\lstset{numbers=left,
-numberstyle= \\tiny,
-keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
-frame=shadowbox,
-breaklines=true,
-rulesepcolor= \\color{ red!20!green!20!blue!20}
-}
-
-[EXTRA]
-"
-                 ("\\chapter{%s}" . "\\chapter*{%s}")
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-  (add-to-list 'org-latex-classes
-               '("lengyue-org-article"
-                 "\\documentclass{article}
-\\usepackage{titlesec}
-\\usepackage{hyperref}
-
-[NO-DEFAULT-PACKAGES]
-[PACKAGES]
-
-\\parindent 2em
-
-\\setmainfont{DejaVu Sans} % 英文衬线字体
-\\setsansfont{DejaVu Serif} % 英文无衬线字体
-\\setmonofont{DejaVu Sans Mono}
-
-%如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
-\\defaultfontfeatures{Mapping=tex-text}
-
-% 中文断行
-\\XeTeXlinebreaklocale \"zh\"
-\\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
-
-% 代码设置
-\\lstset{numbers=left,
-numberstyle= \\tiny,
-keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
-frame=shadowbox,
-breaklines=true,
-rulesepcolor= \\color{ red!20!green!20!blue!20}
-}
-
-[EXTRA]
-"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-  (add-to-list 'org-latex-classes
-               '("lengyue-org-beamer"
-                 "\\documentclass{beamer}
-\\usepackage[UTF8]{ctex}
-\\usepackage[utf8]{inputenc}
-% beamer set
-\\usepackage[none]{hyphenat}
-\\usepackage[abs]{overpic}
-
-[NO-DEFAULT-PACKAGES]
-[PACKAGES]
-
-\\setmainfont{DejaVu Sans} % 英文衬线字体
-\\setsansfont{DejaVu Serif} % 英文无衬线字体
-\\setmonofont{DejaVu Sans Mono}
-
-%如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
-\\defaultfontfeatures{Mapping=tex-text}
-
-% 中文断行
-\\XeTeXlinebreaklocale \"zh\"
-\\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
-
-% 代码设置
-\\lstset{numbers=left,
-numberstyle= \\tiny,
-keywordstyle= \\color{ blue!70},commentstyle=\\color{red!50!green!50!blue!50},
-frame=shadowbox,
-breaklines=true,
-rulesepcolor= \\color{ red!20!green!20!blue!20}
-}
-
-[EXTRA]
-"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-  ;; 将 pdf 引擎切换为 xelatex
-  (setq org-latex-pdf-process
-        '(
-          "xelatex -interaction nonstopmode -output-directory %o %f"
-          ;;"biber %b" "xelatex -interaction nonstopmode -output-directory %o %f"
-          "bibtex %b"
-          "xelatex -interaction nonstopmode -output-directory %o %f"
-          "xelatex -interaction nonstopmode -output-directory %o %f"))
-  ;; init helm-bibtex
-(use-package helm-bibtex :ensure t
-  :bind ("<f11>" . helm-bibtex)
-  :commands (helm-bibtex)
-  :init
-  (add-hook 'bibtex-completion-edit-notes 'org-ref-open-bibtex-notes)
-  (setq bibtex-completion-open-any 'org-ref-open-bibtex-pdf)
-  :config
-  (setq bibtex-completion-bibliography "~/literature/bibliography.bib"
-      bibtex-completion-library-path "~/literature/pdfs"
-      bibtex-completion-notes-path "~/literature/refnotes.org")
-  ;(setq bibtex-completion-display-formats
-  ;  '((t . "${=type=:7} ${year:4} ${=has-pdf=:1}${=has-note=:1} ${author:30} ${title:72} ")))
-  (setq bibtex-completion-additional-search-fields '(keywords))
-  (setq bibtex-completion-notes-template-one-file
-	(format "\n** TODO ${=key=} - ${title}\n  :PROPERTIES:\n    :Author: ${author-or-editor}\n    :Journal: ${journal}\n  :END:\n\n"))
-  (setq bibtex-completion-display-formats
-	'((t . "${author:20} ${year:4} ${=has-pdf=:3} ${=has-note=:1} ${=type=:7} ${title:90}")))
-  (setq bibtex-completion-pdf-field "file")
-  (setq bibtex-completion-pdf-symbol "PDF")
-  (setq bibtex-completion-notes-symbol "N")
- )
-
-(use-package org-ref :ensure t
-  ;;:defer 1
-  :after (org)
-  :config
-  ;;(setq reftex-default-bibliography '("~/OneDrive/2020.03.28_PunchingShearReferences/Literature.bib"))
-  ;; see org-ref for use of these variables
-  (setq bibtex-completion-pdf-field "file")
-  (setq org-ref-bibliography-notes "~/literature/refnotes.org"
-        org-ref-default-bibliography '("~/literature/bibliography.bib")
-	      org-ref-pdf-directory "~/literature/pdfs")
-  ;;(setq bibtex-completion-bibliography "~/OneDrive/2020.03.28_PunchingShearReferences/Literature.bib"
-  ;;    bibtex-completion-library-path "~/OneDrive/2020.03.28_PunchingShearReferences/PDFs"
-  ;;    bibtex-completion-notes-path "~/OneDrive/2020.03.28_PunchingShearReferences/Literature-manuscript.org")
-  (setq org-ref-show-broken-links nil)
-  (setq bibtex-completion-pdf-open-function 'org-open-file)
-  (setq org-ref-note-title-format
-   "** TODO %k - %t
- :PROPERTIES:
-  :CUSTOM_ID: %k
-  :AUTHOR: %9a
-  :JOURNAL: %j
-  :DOI: %D
-  :URL: %U
- :END:
-")
-
-  (setq bibtex-completion-display-formats
-	'((t . "${author:20} ${year:4} ${=has-pdf=:3} ${=has-note=:1} ${=type=:7} ${title:90}")))
-  (defun my/org-ref-notes-function (candidates)
-    (let ((key (helm-marked-candidates)))
-      (funcall org-ref-notes-function (car key))))
-
-  (helm-delete-action-from-source "Edit notes" helm-source-bibtex)
-;; Note that 7 is a magic number of the index where you want to insert the command. You may need to change yours.
-  (helm-add-action-to-source "Edit notes" 'my/org-ref-notes-function helm-source-bibtex 7)
-)
 ;;
-(setq org-export-backends (quote (ascii html icalendar latex md)))
-;; citeproc-org
-;; 使得 org mode 可以使用引用
-(citeproc-org-setup)
-;; git-gutter
-;; 使得 emacs 可以在侧边栏显示 git 的状态
+(setq org-export-backends (quote (ascii html icalendar latex markdown)))
 
+;; citproc-org
+(citeproc-org-setup)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -1719,8 +1357,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(TeX-command-list
-   (quote
-    (("XeLaTex" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)
+   '(("XeLaTex" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)
      ("TeX" "%(PDF)%(tex) %(file-line-error) %`%(extraopts) %S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
       (plain-tex-mode texinfo-mode ams-tex-mode)
       :help "Run plain TeX")
@@ -1785,14 +1422,13 @@ This function is called at the very end of Spacemacs initialization."
      ("Spell" "(TeX-ispell-document \"\")" TeX-run-function nil t :help "Spell-check the document")
      ("Clean" "TeX-clean" TeX-run-function nil t :help "Delete generated intermediate files")
      ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
-     ("Other" "" TeX-run-command t t :help "Run an arbitrary command"))))
- '(alert-default-style (quote toaster))
+     ("Other" "" TeX-run-command t t :help "Run an arbitrary command")))
+ '(alert-default-style 'toaster)
  '(evil-want-Y-yank-to-eol nil)
  '(latex-run-command "xelatex")
  '(org-latex-compiler "xelatex")
  '(package-selected-packages
-   (quote
-    (youdao-dictionary csv-mode wgrep smex ivy-hydra counsel-projectile counsel swiper ivy cnfonts org-projectile org-pomodoro alert log4e xterm-color unfill smeargle shell-pop orgit org-category-capture org-present gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger g it-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete spaceline paradox hydra highlight-numbers helm-projectile projectile flx-ido evil-unimpaired f evil-search-highlight-persist evil-lisp-state ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org powerline restart-emacs request rainbow-delimiters pkg-info popwin persp-mode pcre2el spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide lv hungry-delete hl-todo highlight-parentheses parent-mode highlight-indentation helm-themes helm-swoop epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+   '(youdao-dictionary names chinese-word-at-point csv-mode wgrep smex ivy-hydra counsel-projectile counsel swiper ivy cnfonts org-projectile org-pomodoro alert log4e xterm-color unfill smeargle shell-pop orgit org-category-capture org-present gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger g it-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete spaceline paradox hydra highlight-numbers helm-projectile projectile flx-ido evil-unimpaired f evil-search-highlight-persist evil-lisp-state ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org powerline restart-emacs request rainbow-delimiters pkg-info popwin persp-mode pcre2el spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide lv hungry-delete hl-todo highlight-parentheses parent-mode highlight-indentation helm-themes helm-swoop epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
