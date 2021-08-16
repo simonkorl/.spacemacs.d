@@ -336,8 +336,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq configuration-layer-elpa-archives
         '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
           ("org-cn"   . "http://elpa.emacs-china.org/org/")
-          ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
+          ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")
+          )
   )
+)
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -351,7 +353,7 @@ you should place your code here."
     )
   (require 'eaf-evil)
 
-  (setq eaf-evil-leader-keymap  spacemacs-cmds) 
+  (setq eaf-evil-leader-keymap  spacemacs-cmds)
 
   (define-key key-translation-map (kbd "SPC")
     (lambda (prompt)
@@ -373,7 +375,9 @@ you should place your code here."
 
   (awesome-tab-build-helm-source)
 
-  (global-set-key (kbd "C-c C-j") 'awesome-fast-switch/my-select-window)
+  (spacemacs/set-leader-keys
+    "t." 'awesome-fast-switch/my-select-window
+    )
 
 (defhydra awesome-fast-switch (:hint nil)
   "
