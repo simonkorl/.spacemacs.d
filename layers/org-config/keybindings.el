@@ -30,3 +30,6 @@
 (global-set-key (kbd "C-<f11>") 'org-clock-in)
 (global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
 (global-set-key (kbd "C-c c") 'org-capture)
+
+;; my calendar
+(global-set-key(kbd "C-c o") 'my-open-calendar)
