@@ -4,3 +4,6 @@
 [submodule "emacs-application-framework"]
 	path = emacs-application-framework
 	url = https://github.com/manateelazycat/emacs-application-framework.git
+[submodule "org-roam"]
+	path = org-roam
+	url = git@github.com:org-roam/org-roam.git
