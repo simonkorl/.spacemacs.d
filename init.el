@@ -1430,7 +1430,8 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(TeX-command-list
-   '(("XeLaTex" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)
+   (quote
+    (("XeLaTex" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)
      ("TeX" "%(PDF)%(tex) %(file-line-error) %`%(extraopts) %S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
       (plain-tex-mode texinfo-mode ams-tex-mode)
       :help "Run plain TeX")
@@ -1495,14 +1496,15 @@ This function is called at the very end of Spacemacs initialization."
      ("Spell" "(TeX-ispell-document \"\")" TeX-run-function nil t :help "Spell-check the document")
      ("Clean" "TeX-clean" TeX-run-function nil t :help "Delete generated intermediate files")
      ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
-     ("Other" "" TeX-run-command t t :help "Run an arbitrary command")))
- '(alert-default-style 'toaster)
+     ("Other" "" TeX-run-command t t :help "Run an arbitrary command"))))
+ '(alert-default-style (quote toaster))
  '(evil-want-Y-yank-to-eol nil)
  '(latex-run-command "xelatex")
  '(org-latex-compiler "xelatex")
- '(org-roam-directory "c:/Users/machu/org/roam")
+ '(org-roam-directory "~/org/roam" nil nil "Customized with use-package org-roam")
  '(package-selected-packages
-   '(org-roam emacsql-sqlite emacsql dap-mode bui wgrep smex ivy-hydra counsel-projectile counsel swiper ivy cnfonts org-projectile org-pomodoro alert log4e xterm-color unfill smeargle shell-pop orgit org-category-capture org-present gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger g it-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete spaceline paradox hydra highlight-numbers helm-projectile projectile flx-ido evil-unimpaired f evil-search-highlight-persist evil-lisp-state ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org powerline restart-emacs request rainbow-delimiters pkg-info popwin persp-mode pcre2el spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide lv hungry-delete hl-todo highlight-parentheses parent-mode highlight-indentation helm-themes helm-swoop epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+   (quote
+    (flyspell-correct-helm flyspell-correct auto-dictionary wgrep smex ivy-hydra counsel-projectile counsel swiper ivy cnfonts org-projectile org-pomodoro alert log4e xterm-color unfill smeargle shell-pop orgit org-category-capture org-present gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger g it-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete spaceline paradox hydra highlight-numbers helm-projectile projectile flx-ido evil-unimpaired f evil-search-highlight-persist evil-lisp-state ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org powerline restart-emacs request rainbow-delimiters pkg-info popwin persp-mode pcre2el spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide lv hungry-delete hl-todo highlight-parentheses parent-mode highlight-indentation helm-themes helm-swoop epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
