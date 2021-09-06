@@ -52,15 +52,23 @@ values."
      emacs-lisp
      git
      markdown
+     bibtex
      (org :variables
+          org-enable-notifications t
+          ;; org-start-notification-daemon-on-startup t
           org-enable-hugo-support t
+          org-enable-trello-support t
           org-enable-org-brain-support nil
           org-enable-roam-support t
+          org-enable-roam-protocol t
+          org-enable-roam-server t
           org-enable-github-support t
       )
      (shell :variables
              shell-default-height 30
-             shell-default-position 'bottom)
+             shell-default-position 'bottom
+             shell-enable-smart-eshell t
+             )
      ;; spell-checking
      syntax-checking
      version-control
@@ -80,6 +88,10 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
+                                      ;; org-roam-ui
+                                      websocket
+                                      simple-httpd
+                                      bui
                                       ox-pandoc
                                       company-tabnine
                                       youdao-dictionary
@@ -322,7 +334,7 @@ values."
    dotspacemacs-highlight-delimiters 'all
    ;; If non nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server nil
+   dotspacemacs-persistent-server t
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
@@ -383,6 +395,24 @@ you should place your code here."
     (org-roam-setup)
     )
   (setq org-roam-completion-everywhere t)
+  (when (<= emacs-major-version 27)
+     (defun seq-first (sequence)
+       "Return the first element of SEQUENCE."
+       (seq-elt sequence 0))
+     )
+  (use-package org-roam-ui
+    :load-path "~/.spacemacs.d/org-roam-ui"
+    :after org-roam
+    ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+    ;;         a hookable mode anymore, you're advised to pick something yourself
+    ;;         if you don't care about startup time, use
+    ;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
   (use-package org-pandoc-import
     :load-path "~/.spacemacs.d/org-pandoc-import"
     )
@@ -393,6 +423,7 @@ you should place your code here."
   ;; Trigger completion immediately
   (setq company-idle-delay 0)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
+
   (setq company-show-numbers t)
   ;; EAF
   (use-package eaf
@@ -1429,82 +1460,11 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(TeX-command-list
-   (quote
-    (("XeLaTex" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t)
-     ("TeX" "%(PDF)%(tex) %(file-line-error) %`%(extraopts) %S%(PDFout)%(mode)%' %t" TeX-run-TeX nil
-      (plain-tex-mode texinfo-mode ams-tex-mode)
-      :help "Run plain TeX")
-     ("LaTeX" "%`%l%(mode)%' %T" TeX-run-TeX nil
-      (latex-mode doctex-mode)
-      :help "Run LaTeX")
-     ("Makeinfo" "makeinfo %(extraopts) %t" TeX-run-compile nil
-      (texinfo-mode)
-      :help "Run Makeinfo with Info output")
-     ("Makeinfo HTML" "makeinfo %(extraopts) --html %t" TeX-run-compile nil
-      (texinfo-mode)
-      :help "Run Makeinfo with HTML output")
-     ("AmSTeX" "amstex %(PDFout) %`%(extraopts) %S%(mode)%' %t" TeX-run-TeX nil
-      (ams-tex-mode)
-      :help "Run AMSTeX")
-     ("ConTeXt" "%(cntxcom) --once --texutil %(extraopts) %(execopts)%t" TeX-run-TeX nil
-      (context-mode)
-      :help "Run ConTeXt once")
-     ("ConTeXt Full" "%(cntxcom) %(extraopts) %(execopts)%t" TeX-run-TeX nil
-      (context-mode)
-      :help "Run ConTeXt until completion")
-     ("BibTeX" "bibtex %s" TeX-run-BibTeX nil
-      (plain-tex-mode latex-mode doctex-mode context-mode texinfo-mode ams-tex-mode)
-      :help "Run BibTeX")
-     ("Biber" "biber %s" TeX-run-Biber nil
-      (plain-tex-mode latex-mode doctex-mode texinfo-mode ams-tex-mode)
-      :help "Run Biber")
-     ("View" "%V" TeX-run-discard-or-function t t :help "Run Viewer")
-     ("Print" "%p" TeX-run-command t t :help "Print the file")
-     ("Queue" "%q" TeX-run-background nil t :help "View the printer queue" :visible TeX-queue-command)
-     ("File" "%(o?)dvips %d -o %f " TeX-run-dvips t
-      (plain-tex-mode latex-mode doctex-mode texinfo-mode ams-tex-mode)
-      :help "Generate PostScript file")
-     ("Dvips" "%(o?)dvips %d -o %f " TeX-run-dvips nil
-      (plain-tex-mode latex-mode doctex-mode texinfo-mode ams-tex-mode)
-      :help "Convert DVI file to PostScript")
-     ("Dvipdfmx" "dvipdfmx %d" TeX-run-dvipdfmx nil
-      (plain-tex-mode latex-mode doctex-mode texinfo-mode ams-tex-mode)
-      :help "Convert DVI file to PDF with dvipdfmx")
-     ("Ps2pdf" "ps2pdf %f" TeX-run-ps2pdf nil
-      (plain-tex-mode latex-mode doctex-mode texinfo-mode ams-tex-mode)
-      :help "Convert PostScript file to PDF")
-     ("Glossaries" "makeglossaries %s" TeX-run-command nil
-      (plain-tex-mode latex-mode doctex-mode texinfo-mode ams-tex-mode)
-      :help "Run makeglossaries to create glossary
-     file")
-     ("Index" "makeindex %s" TeX-run-index nil
-      (plain-tex-mode latex-mode doctex-mode texinfo-mode ams-tex-mode)
-      :help "Run makeindex to create index file")
-     ("upMendex" "upmendex %s" TeX-run-index t
-      (plain-tex-mode latex-mode doctex-mode texinfo-mode ams-tex-mode)
-      :help "Run upmendex to create index file")
-     ("Xindy" "texindy %s" TeX-run-command nil
-      (plain-tex-mode latex-mode doctex-mode texinfo-mode ams-tex-mode)
-      :help "Run xindy to create index file")
-     ("Check" "lacheck %s" TeX-run-compile nil
-      (latex-mode)
-      :help "Check LaTeX file for correctness")
-     ("ChkTeX" "chktex -v6 %s" TeX-run-compile nil
-      (latex-mode)
-      :help "Check LaTeX file for common mistakes")
-     ("Spell" "(TeX-ispell-document \"\")" TeX-run-function nil t :help "Spell-check the document")
-     ("Clean" "TeX-clean" TeX-run-function nil t :help "Delete generated intermediate files")
-     ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
-     ("Other" "" TeX-run-command t t :help "Run an arbitrary command"))))
- '(alert-default-style (quote toaster))
  '(evil-want-Y-yank-to-eol nil)
- '(latex-run-command "xelatex")
- '(org-latex-compiler "xelatex")
- '(org-roam-directory "~/org/roam" nil nil "Customized with use-package org-roam")
+ '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello))
  '(package-selected-packages
    (quote
-    (flyspell-correct-helm flyspell-correct auto-dictionary wgrep smex ivy-hydra counsel-projectile counsel swiper ivy cnfonts org-projectile org-pomodoro alert log4e xterm-color unfill smeargle shell-pop orgit org-category-capture org-present gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger g it-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete spaceline paradox hydra highlight-numbers helm-projectile projectile flx-ido evil-unimpaired f evil-search-highlight-persist evil-lisp-state ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org powerline restart-emacs request rainbow-delimiters pkg-info popwin persp-mode pcre2el spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide lv hungry-delete hl-todo highlight-parentheses parent-mode highlight-indentation helm-themes helm-swoop epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (dap-mode wgrep smex ivy-hydra counsel-projectile counsel swiper ivy cnfonts org-projectile org-pomodoro alert log4e xterm-color unfill smeargle shell-pop orgit org-category-capture org-present gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger g it-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete spaceline paradox hydra highlight-numbers helm-projectile projectile flx-ido evil-unimpaired f evil-search-highlight-persist evil-lisp-state ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org powerline restart-emacs request rainbow-delimiters pkg-info popwin persp-mode pcre2el spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide lv hungry-delete hl-todo highlight-parentheses parent-mode highlight-indentation helm-themes helm-swoop epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

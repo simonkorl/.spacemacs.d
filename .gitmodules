@@ -10,3 +10,6 @@
 [submodule "org-pandoc-import"]
 	path = org-pandoc-import
 	url = git@github.com:tecosaur/org-pandoc-import.git
+[submodule "org-roam-ui"]
+	path = org-roam-ui
+	url = git@github.com:org-roam/org-roam-ui.git
