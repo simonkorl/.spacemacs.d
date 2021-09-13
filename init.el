@@ -1278,7 +1278,7 @@ so change the default 'F' binding in the agenda to allow both"
     ;; Consider only tasks with done todo headings as archivable candidates
     (let ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
           (subtree-end (save-excursion (org-end-of-subtree t))))
-      (if (member (org-get-todo-state) org-todo-keywords-1)
+      (if (and (member (org-get-todo-state) org-todo-keywords-1) (not(member (org-get-todo-state) (list "MEETING"))))
           (if (member (org-get-todo-state) org-done-keywords)
               (let* ((daynr (string-to-number (format-time-string "%d" (current-time))))
                      (a-month-ago (* 60 60 24 (+ daynr 1)))
