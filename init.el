@@ -1415,8 +1415,7 @@ Late deadlines first, then scheduled, then non-late deadlines"
   (and (not (bh/is-deadline date-str))
        (not (bh/is-scheduled date-str))))
 
-(defun bh/
-is-due-deadline (date-str)
+(defun bh/is-due-deadline (date-str)
   (string-match "Deadline:" date-str))
 
 (defun bh/is-late-deadline (date-str)
@@ -1499,6 +1498,9 @@ is-due-deadline (date-str)
 
 ;; citproc-org
 (citeproc-org-setup)
+
+;; start up with agenda
+(org-agenda-list)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
