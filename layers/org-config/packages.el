@@ -79,9 +79,10 @@ Each entry is either:
       - A list beginning with the symbol `recipe' is a melpa
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
 
-(defun org-config/init-org-ref()
+(defun org-config/post-init-org-ref()
 
-  (use-package org-ref :ensure t
+  (use-package org-ref
+    :ensure t
     ;;:defer 1
     :after (org)
     :config
@@ -106,13 +107,13 @@ Each entry is either:
   :URL: %U
  :END:
 ")
-    
+
     (setq bibtex-completion-display-formats
 	        '((t . "${author:20} ${year:4} ${=has-pdf=:3} ${=has-note=:1} ${=type=:7} ${title:90}")))
     (defun my/org-ref-notes-function (candidates)
       (let ((key (helm-marked-candidates)))
         (funcall org-ref-notes-function (car key))))
-    
+
     (helm-delete-action-from-source "Edit notes" helm-source-bibtex)
     ;; Note that 7 is a magic number of the index where you want to insert the command. You may need to change yours.
     (helm-add-action-to-source "Edit notes" 'my/org-ref-notes-function helm-source-bibtex 7)
@@ -135,9 +136,11 @@ Each entry is either:
   (use-package calfw-ical)
   )
 
-(defun org-config/init-helm-bibtex()
+(defun org-config/post-init-helm-bibtex()
   ;; init helm-bibtex
-  (use-package helm-bibtex :ensure t
+  (use-package helm-bibtex
+    :ensure t
+    :after (org)
     :bind ("<f11>" . helm-bibtex)
     :commands (helm-bibtex)
     :init

@@ -1,3 +1,4 @@
+(with-eval-after-load 'org
 
 (with-eval-after-load 'org-agenda
   (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro)
@@ -332,4 +333,4 @@ rulesepcolor= \\color{ red!20!green!20!blue!20}
           "bibtex %b"
           "xelatex -interaction nonstopmode -output-directory %o %f"
           "xelatex -interaction nonstopmode -output-directory %o %f"))
-
+  )

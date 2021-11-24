@@ -52,16 +52,24 @@ values."
      emacs-lisp
      git
      markdown
+     bibtex
      (org :variables
+          org-enable-notifications t
+          ;; org-start-notification-daemon-on-startup t
           org-enable-hugo-support t
+          org-enable-trello-support t
           org-enable-org-brain-support nil
           org-enable-roam-support t
+          org-enable-roam-protocol t
+          ;; org-enable-roam-server t
           org-enable-github-support t
           org-enable-reveal-js-support t
       )
      (shell :variables
              shell-default-height 30
-             shell-default-position 'bottom)
+             shell-default-position 'bottom
+             shell-enable-smart-eshell t
+             )
      ;; spell-checking
      syntax-checking
      version-control
@@ -72,6 +80,10 @@ values."
      docker
      evernote
      c-c++
+     ;;
+     tabs
+     debug
+     ;; custom
      (conda-layer :location local)
      ;; (display :location local)
      (org-config :location local)
@@ -325,7 +337,7 @@ values."
    dotspacemacs-highlight-delimiters 'all
    ;; If non nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server nil
+   dotspacemacs-persistent-server t
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
@@ -350,9 +362,9 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (setq configuration-layer-elpa-archives
-        '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
-          ("org-cn"   . "http://elpa.emacs-china.org/org/")
-          ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")
+        '(("melpa-cn" . "https://elpa.emacs-china.org/melpa/")
+          ("org-cn"   . "https://elpa.emacs-china.org/org/")
+          ("gnu-cn"   . "https://elpa.emacs-china.org/gnu/")
           ("org"          . "https://orgmode.org/elpa/")
           ("gnu"          . "https://elpa.gnu.org/packages/")
           ("nongnu"       . "https://elpa.nongnu.org/nongnu/")
@@ -386,6 +398,24 @@ you should place your code here."
     (org-roam-setup)
     )
   (setq org-roam-completion-everywhere t)
+  (when (<= emacs-major-version 27)
+     (defun seq-first (sequence)
+       "Return the first element of SEQUENCE."
+       (seq-elt sequence 0))
+     )
+  (use-package org-roam-ui
+    :load-path "~/.spacemacs.d/org-roam-ui"
+    :after org-roam
+    ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+    ;;         a hookable mode anymore, you're advised to pick something yourself
+    ;;         if you don't care about startup time, use
+    ;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
   (use-package org-pandoc-import
     :load-path "~/.spacemacs.d/org-pandoc-import"
     )
@@ -409,6 +439,7 @@ you should place your code here."
   ;; Trigger completion immediately
   (setq company-idle-delay 0)
   ;; Number the candidates (use M-1, M-2 etc to select completions).
+
   (setq company-show-numbers t)
   ;; EAF
   (use-package eaf
@@ -431,51 +462,51 @@ you should place your code here."
         (kbd "SPC"))))
 
   (use-package all-the-icons)
-  (use-package awesome-tab
-    :load-path "~/.spacemacs.d/awesome-tab"
-    :config
-    (awesome-tab-mode t))
+;;   (use-package awesome-tab
+;;     :load-path "~/.spacemacs.d/awesome-tab"
+;;     :config
+;;     (awesome-tab-mode t))
 
-  (awesome-tab-build-helm-source)
+;;   (awesome-tab-build-helm-source)
 
-  (spacemacs/set-leader-keys
-    "t." 'awesome-fast-switch/my-select-window
-    )
+;;   (spacemacs/set-leader-keys
+;;     "t." 'awesome-fast-switch/my-select-window
+;;     )
 
-(defhydra awesome-fast-switch (:hint nil)
-  "
- ^^^^Fast Move             ^^^^Tab                    ^^Search            ^^Misc
--^^^^--------------------+-^^^^---------------------+-^^----------------+-^^---------------------------
-   ^_k_^   prev group    | _C-a_^^     select first | _b_ search buffer | _C-k_   kill buffer
- _h_   _l_  switch tab   | _C-e_^^     select last  | _g_ search group  | _C-S-k_ kill others in group
-   ^_j_^   next group    | _C-j_^^     ace jump     | ^^                | ^^
- ^^0 ~ 9^^ select window | _C-h_/_C-l_ move current | ^^                | ^^
--^^^^--------------------+-^^^^---------------------+-^^----------------+-^^---------------------------
-"
-  ("h" awesome-tab-backward-tab)
-  ("j" awesome-tab-forward-group)
-  ("k" awesome-tab-backward-group)
-  ("l" awesome-tab-forward-tab)
-  ("0" my-select-window)
-  ("1" my-select-window)
-  ("2" my-select-window)
-  ("3" my-select-window)
-  ("4" my-select-window)
-  ("5" my-select-window)
-  ("6" my-select-window)
-  ("7" my-select-window)
-  ("8" my-select-window)
-  ("9" my-select-window)
-  ("C-a" awesome-tab-select-beg-tab)
-  ("C-e" awesome-tab-select-end-tab)
-  ("C-j" awesome-tab-ace-jump)
-  ("C-h" awesome-tab-move-current-tab-to-left)
-  ("C-l" awesome-tab-move-current-tab-to-right)
-  ("b" ivy-switch-buffer)
-  ("g" awesome-tab-counsel-switch-group)
-  ("C-k" kill-current-buffer)
-  ("C-S-k" awesome-tab-kill-other-buffers-in-current-group)
-  ("q" nil "quit"))
+;; (defhydra awesome-fast-switch (:hint nil)
+;;   "
+;;  ^^^^Fast Move             ^^^^Tab                    ^^Search            ^^Misc
+;; -^^^^--------------------+-^^^^---------------------+-^^----------------+-^^---------------------------
+;;    ^_k_^   prev group    | _C-a_^^     select first | _b_ search buffer | _C-k_   kill buffer
+;;  _h_   _l_  switch tab   | _C-e_^^     select last  | _g_ search group  | _C-S-k_ kill others in group
+;;    ^_j_^   next group    | _C-j_^^     ace jump     | ^^                | ^^
+;;  ^^0 ~ 9^^ select window | _C-h_/_C-l_ move current | ^^                | ^^
+;; -^^^^--------------------+-^^^^---------------------+-^^----------------+-^^---------------------------
+;; "
+;;   ("h" awesome-tab-backward-tab)
+;;   ("j" awesome-tab-forward-group)
+;;   ("k" awesome-tab-backward-group)
+;;   ("l" awesome-tab-forward-tab)
+;;   ("0" my-select-window)
+;;   ("1" my-select-window)
+;;   ("2" my-select-window)
+;;   ("3" my-select-window)
+;;   ("4" my-select-window)
+;;   ("5" my-select-window)
+;;   ("6" my-select-window)
+;;   ("7" my-select-window)
+;;   ("8" my-select-window)
+;;   ("9" my-select-window)
+;;   ("C-a" awesome-tab-select-beg-tab)
+;;   ("C-e" awesome-tab-select-end-tab)
+;;   ("C-j" awesome-tab-ace-jump)
+;;   ("C-h" awesome-tab-move-current-tab-to-left)
+;;   ("C-l" awesome-tab-move-current-tab-to-right)
+;;   ("b" ivy-switch-buffer)
+;;   ("g" awesome-tab-counsel-switch-group)
+;;   ("C-k" kill-current-buffer)
+;;   ("C-S-k" awesome-tab-kill-other-buffers-in-current-group)
+;;   ("q" nil "quit"))
 
   ;; ============
   ;; cnfonts
@@ -1296,7 +1327,38 @@ so change the default 'F' binding in the agenda to allow both"
         next-headline))))
 
 
-  ;; Agenda view tweaks
+;; Agenda view tweaks
+;; Always hilight the current agenda line
+(add-hook 'org-agenda-mode-hook
+          '(lambda () (hl-line-mode 1))
+          'append)
+;; The following custom-set-faces create the highlights
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-mode-line-clock ((t (:background "grey75" :foreground "red" :box (:line-width -1 :style released-button)))) t))
+;; Keep tasks with dates on the global todo lists
+(setq org-agenda-todo-ignore-with-date nil)
+
+;; Keep tasks with deadlines on the global todo lists
+(setq org-agenda-todo-ignore-deadlines nil)
+
+;; Keep tasks with scheduled dates on the global todo lists
+(setq org-agenda-todo-ignore-scheduled nil)
+
+;; Keep tasks with timestamps on the global todo lists
+(setq org-agenda-todo-ignore-timestamp nil)
+
+;; Remove completed deadline tasks from the agenda view
+(setq org-agenda-skip-deadline-if-done t)
+
+;; Remove completed scheduled tasks from the agenda view
+(setq org-agenda-skip-scheduled-if-done t)
+
+;; Remove completed items from search results
+(setq org-agenda-skip-timestamp-if-done t)
 ;; Show all future entries for repeating tasks
 (setq org-agenda-repeating-timestamp-show-all t)
 
@@ -1315,7 +1377,6 @@ so change the default 'F' binding in the agenda to allow both"
 
 ;; Display tags farther right
 (setq org-agenda-tags-column -102)
-
 ;;
 ;; Agenda sorting functions
 ;;
@@ -1412,12 +1473,65 @@ Late deadlines first, then scheduled, then non-late deadlines"
 (display-time-mode 1);; 显示时间
 (setq display-time-24hr-format t) ;;格式
 (setq display-time-day-and-date t) ;;显示时间、星期、日期
+;; deadline warning
+(setq org-deadline-warning-days 30)
+;; inactive timestamp
+(defvar bh/insert-inactive-timestamp t)
 
+(defun bh/toggle-insert-inactive-timestamp ()
+  (interactive)
+  (setq bh/insert-inactive-timestamp (not bh/insert-inactive-timestamp))
+  (message "Heading timestamps are %s" (if bh/insert-inactive-timestamp "ON" "OFF")))
+
+(defun bh/insert-inactive-timestamp ()
+  (interactive)
+  (org-insert-time-stamp nil t t nil nil nil))
+
+(defun bh/insert-heading-inactive-timestamp ()
+  (save-excursion
+    (when bh/insert-inactive-timestamp
+      (org-return)
+      (org-cycle)
+      (bh/insert-inactive-timestamp))))
+
+(add-hook 'org-insert-heading-hook 'bh/insert-heading-inactive-timestamp 'append)
+
+(global-set-key (kbd "<f9> t") 'bh/insert-inactive-timestamp)
+
+(setq org-exp-with-timestamps nil)
+
+;; 18.22 return follows link
+(setq org-return-follows-link t)
+;; 18.23
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-mode-line-clock ((t (:foreground "red" :box (:line-width -1 :style released-button)))) t))
+;; 18.24 meeting notes
+(defun bh/prepare-meeting-notes ()
+  "Prepare meeting notes for email
+   Take selected region and convert tabs to spaces, mark TODOs with leading >>>, and copy to kill ring for pasting"
+  (interactive)
+  (let (prefix)
+    (save-excursion
+      (save-restriction
+        (narrow-to-region (region-beginning) (region-end))
+        (untabify (point-min) (point-max))
+        (goto-char (point-min))
+        (while (re-search-forward "^\\( *-\\\) \\(TODO\\|DONE\\): " (point-max) t)
+          (replace-match (concat (make-string (length (match-string 1)) ?>) " " (match-string 2) ": ")))
+        (goto-char (point-min))
+        (kill-ring-save (point-min) (point-max))))))
 ;;
 (setq org-export-backends (quote (ascii html icalendar latex markdown)))
 
 ;; citproc-org
 (citeproc-org-setup)
+
+;; start up with agenda
+(org-agenda-list)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -1522,12 +1636,13 @@ This function is called at the very end of Spacemacs initialization."
      (emacs-lisp . t)
      (ditaa . t)))
  '(org-latex-compiler "xelatex")
+ '(org-trello-current-prefix-keybinding "C-c o" nil (org-trello))
  '(package-selected-packages
-   '(pydoc inspector info+ git-modes gendoxy dap-mode bui wgrep smex ivy-hydra counsel-projectile counsel swiper ivy cnfonts org-projectile org-pomodoro alert log4e xterm-color unfill smeargle shell-pop orgit org-category-capture org-present gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger g it-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete spaceline paradox hydra highlight-numbers helm-projectile projectile flx-ido evil-unimpaired f evil-search-highlight-persist evil-lisp-state ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org powerline restart-emacs request rainbow-delimiters pkg-info popwin persp-mode pcre2el spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide lv hungry-delete hl-todo highlight-parentheses parent-mode highlight-indentation helm-themes helm-swoop epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
+   '(dap-mode bui wgrep smex ivy-hydra counsel-projectile counsel swiper ivy cnfonts org-projectile org-pomodoro alert log4e xterm-color unfill smeargle shell-pop orgit org-category-capture org-present gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger g it-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet ac-ispell auto-complete spaceline paradox hydra highlight-numbers helm-projectile projectile flx-ido evil-unimpaired f evil-search-highlight-persist evil-lisp-state ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree toc-org powerline restart-emacs request rainbow-delimiters pkg-info popwin persp-mode pcre2el spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide lv hungry-delete hl-todo highlight-parentheses parent-mode highlight-indentation helm-themes helm-swoop epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu elisp-slime-nav dumb-jump dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(org-mode-line-clock ((t (:background "grey75" :foreground "red" :box (:line-width -1 :style released-button))))))
 )
