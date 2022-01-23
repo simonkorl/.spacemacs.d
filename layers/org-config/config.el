@@ -1,13 +1,13 @@
 (with-eval-after-load 'org
 
-(with-eval-after-load 'org-agenda
-  (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro)
-  (spacemacs/set-leader-keys-for-major-mode 'org-agenda-mode
-    "." 'spacemacs/org-agenda-transient-state/body)
-  )
+  (with-eval-after-load 'org-agenda
+    (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro)
+    (spacemacs/set-leader-keys-for-major-mode 'org-agenda-mode
+      "." 'spacemacs/org-agenda-transient-state/body)
+    )
 
 ;; Todo
-(setq org-todo-keywords
+  (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "UNCLEAR(u)" "ASK(a)" "|" "DONE(d)")
                 (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING" ))))
 
@@ -82,7 +82,7 @@
 
 
 ;;; Use full outline paths for refile targets - we file directly with IDO
-(setq org-refile-use-outline-path t)
+(setq org-refile-use-outline-path (quote file))
 
 ;;; Targets complete directly with IDO
 (setq org-outline-path-complete-in-steps nil)
@@ -333,4 +333,5 @@ rulesepcolor= \\color{ red!20!green!20!blue!20}
           "bibtex %b"
           "xelatex -interaction nonstopmode -output-directory %o %f"
           "xelatex -interaction nonstopmode -output-directory %o %f"))
-  )
+)
+
